@@ -3,181 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JetX Predictor Pro</title>
+    <title>Blizzard JetX Predictor</title>
     <style>
-        :root {
-            --primary: #ffcc00;
-            --secondary: #00ff66;
-            --bg: #0b0b0b;
-            --card-bg: #1a1a1a;
-        }
-
+        /* Eto ny CSS - Ny Haingony */
         body {
-            background-color: var(--bg);
-            color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #050505;
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            height: 100vh;
             margin: 0;
         }
 
-        .container {
-            background: var(--card-bg);
-            border: 1px solid #333;
+        .app-container {
+            background: #121212;
+            width: 340px;
+            padding: 20px;
             border-radius: 20px;
-            padding: 25px;
-            width: 350px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            border: 1px solid #333;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
             text-align: center;
         }
 
-        h2 {
-            color: var(--primary);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 1.1rem;
-            margin-bottom: 30px;
-            text-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+        .title {
+            color: #ffcc00;
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 25px;
+            letter-spacing: 1px;
         }
 
-        .field {
+        .input-group {
             text-align: left;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         label {
-            display: block;
-            font-size: 10px;
+            font-size: 11px;
             color: #888;
+            display: block;
             margin-bottom: 5px;
-            font-weight: bold;
+            text-transform: uppercase;
         }
 
         input {
             width: 100%;
-            background: #222;
-            border: 1px solid #444;
+            background: #1a1a1a;
+            border: 1px solid #333;
             padding: 12px;
-            border-radius: 8px;
-            color: var(--primary);
-            font-family: monospace;
+            border-radius: 10px;
+            color: #ffcc00;
+            font-size: 14px;
             box-sizing: border-box;
+            outline: none;
         }
 
-        button {
+        input:focus {
+            border-color: #ffcc00;
+        }
+
+        .btn-calcul {
             width: 100%;
-            background: var(--secondary);
+            background: #2ecc71;
             color: #000;
             border: none;
             padding: 15px;
-            border-radius: 8px;
-            font-weight: 800;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 16px;
             cursor: pointer;
-            transition: 0.3s;
-            text-transform: uppercase;
+            margin-top: 10px;
+            transition: 0.2s;
         }
 
-        button:hover {
-            filter: brightness(1.2);
-            box-shadow: 0 0 15px rgba(0, 255, 102, 0.4);
+        .btn-calcul:active {
+            transform: scale(0.98);
         }
 
-        .result-area {
-            margin-top: 25px;
-            display: none;
-            animation: fadeIn 0.5s;
-        }
-
-        .result-box {
-            background: #cc0000;
+        .result-card {
+            margin-top: 20px;
+            background: #e74c3c;
             padding: 20px;
-            border-radius: 12px;
-            border: 1px solid #ff4444;
+            border-radius: 15px;
+            display: none; /* Afenina aloha amin'ny voalohany */
         }
 
-        .result-box span {
-            font-size: 10px;
+        .result-card span {
+            font-size: 11px;
             display: block;
             margin-bottom: 5px;
+            font-weight: bold;
         }
 
-        .result-box h3 {
+        .result-card h2 {
             margin: 0;
-            font-size: 1.8rem;
+            font-size: 32px;
             letter-spacing: 2px;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>✨ BLIZZARD-JETX ✨</h2>
+    <div class="app-container">
+        <div class="title">✨ BLIZZARD-JETX ✨</div>
+        <p style="font-size: 9px; color: #555; margin-top: -20px;">BY KUMA - M.H.S CALCULATOR</p>
 
-    <div class="field">
-        <label>HEURE DE DÉPART</label>
-        <input type="text" id="startTime" placeholder="23:00:00">
-    </div>
+        <div class="input-group">
+            <label>Heure de Départ</label>
+            <input type="text" id="timeInput" placeholder="-- : -- : --">
+        </div>
 
-    <div class="field">
-        <label># HASH (SHA-256)</label>
-        <input type="text" id="hashInput" placeholder="Ampidiro ny hash eto...">
-    </div>
+        <div class="input-group">
+            <label># HASH</label>
+            <input type="text" id="hashInput" placeholder="Ampidiro ny HASH...">
+        </div>
 
-    <button onclick="calculateMHS()">Calculer M.H.S</button>
+        <button class="btn-calcul" onclick="generatePrediction()">⚡ CALCULER M.H.S</button>
 
-    <div class="result-area" id="resultArea">
-        <div class="result-box">
+        <div class="result-card" id="resultCard">
             <span>RÉSULTAT FINAL</span>
-            <h3 id="finalTime">00:00:00</h3>
-            <p id="multiplier" style="margin-top: 10px; font-weight: bold; color: #ffcc00;"></p>
+            <h2 id="finalResult">--:--:--</h2>
         </div>
     </div>
-</div>
 
-<script>
-    function calculateMHS() {
-        const hash = document.getElementById('hashInput').value.trim();
-        const startTime = document.getElementById('startTime').value.trim();
+    <script>
+        /* Eto ny JavaScript - Ny Algorithme */
+        function generatePrediction() {
+            const hash = document.getElementById('hashInput').value;
+            const resCard = document.getElementById('resultCard');
+            const resText = document.getElementById('finalResult');
 
-        if (hash.length < 10) {
-            alert("Ampidiro ny HASH marina!");
-            return;
+            if (hash.length < 5) {
+                alert("Ampidiro aloha ny HASH!");
+                return;
+            }
+
+            // Algorithm fakan-tahaka: mampiasa ny tarehimarika avy amin'ny Hash
+            // mba hamoronana lera izay tsy miova (Deterministic)
+            let hashSeed = 0;
+            for (let i = 0; i < hash.length; i++) {
+                hashSeed += hash.charCodeAt(i);
+            }
+
+            // Kajy ny lera (ampiana segondra vitsy ny lera izao)
+            let now = new Date();
+            let futureTime = new Date(now.getTime() + (hashSeed % 600000)); // Max +10 minitra
+
+            let h = futureTime.getHours().toString().padStart(2, '0');
+            let m = futureTime.getMinutes().toString().padStart(2, '0');
+            let s = futureTime.getSeconds().toString().padStart(2, '0');
+
+            // Asehoy ny valiny
+            resText.innerText = h + ":" + m + ":" + s;
+            resCard.style.display = "block";
         }
-
-        // 1. Fakana isa avy amin'ny HASH (Logic)
-        // Maka characters 4 avy amin'ny hash mba hanaovana kajy lera
-        let part = hash.substring(0, 4);
-        let decimalValue = parseInt(part, 16);
-        
-        // 2. Kajy ny "Lera" (Ity dia simulation ny algorithme)
-        // Manampy segondra vitsy amin'ny lera nampidirinao
-        let secondsToAdd = (decimalValue % 300); // Max 5 minitra
-        
-        let date = new Date();
-        let prediction = new Date(date.getTime() + secondsToAdd * 1000);
-        
-        let h = prediction.getHours().toString().padStart(2, '0');
-        let m = prediction.getMinutes().toString().padStart(2, '0');
-        let s = prediction.getSeconds().toString().padStart(2, '0');
-
-        // 3. Kajy ny multiplier (Tahaka ny an'ny JetX)
-        let slice = hash.substring(0, 8);
-        let val = parseInt(slice, 16);
-        let mult = (Math.floor(100 / (1 - (val / Math.pow(2, 32)))) / 100).toFixed(2);
-
-        // Asehoy ny vokatra
-        document.getElementById('finalTime').innerText = h + ":" + m + ":" + s;
-        document.getElementById('multiplier').innerText = "VOKATRA: " + mult + "x";
-        document.getElementById('resultArea').style.display = 'block';
-    }
-</script>
-
+    </script>
 </body>
 </html>
